@@ -42,6 +42,7 @@
       },
       methods:{
         register:function () {
+          var vm = this;//使用全局变量Vue.prototype来调$message()可以,或者重新定义this也是可以的，如下： var vm = this;
           if (this.regesterForm.password == this.regesterForm.surePassword){
             this.$axios.post("/auth/register", {
               "username": this.regesterForm.username,
@@ -51,7 +52,7 @@
               .then((response) => {
               console.log(response)
                 if (response.data.code == 0) {
-                  this.$message.error({
+                  vm.$message.error({
                     message: "该用户名已存在",
                     showClose: true
                   });
@@ -60,22 +61,22 @@
                   // console.log(this.regesterForm.username)
                   // console.log(response.data.res)
                 } else {
-                  this.$message.success({
+                  vm.$message.success({
                     message:"注册成功",
                     showClose:true
                   })
-                  this.backToLogin();
+                  vm.backToLogin();
                 }
               })
               .catch(function (err) {
                 console.log(err);
-                this.$message.error({
-                  message: err,
+                vm.$message.error({
+                  message: '注册error:'+err,
                   showClose: true
                 })
               })
           } else{
-            this.$message.error({
+            vm.$message.error({
               message:"请检查密码",
               showClose:true
             })
